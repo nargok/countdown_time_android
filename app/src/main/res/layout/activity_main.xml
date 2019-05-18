@@ -5,4 +5,19 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".MainActivity"/>
+        tools:context=".MainActivity" tools:layout_editor_absoluteY="81dp">
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true" app:srcCompat="@drawable/ic_play_arrow_black_24dp"
+            android:id="@+id/playStop" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toBottomOf="parent" android:tint="@android:color/white" app:elevation="0dp"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/timerText" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintEnd_toEndOf="parent"
+            tools:text="3:00" android:textSize="150sp"
+            app:layout_constraintBottom_toTopOf="@+id/playStop"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
