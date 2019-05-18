@@ -1,8 +1,10 @@
 package com.example.mycounddowntimer
 
 import android.icu.util.DateInterval
+import android.media.AudioAttributes
 import android.media.AudioManager
 import android.media.SoundPool
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -79,7 +81,22 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        soundPool = SoundPool(2, AudioManager.STREAM_ALARM, 0)
+        soundPool = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            // API 19以上、21未満の対応
+            @Suppress("DEPRECATION") // 非推奨メソッドを使っているが、対応済なので検査不要
+            SoundPool(2, AudioManager.STREAM_ALARM, 0)
+        } else {
+            // API 21以上の対応
+            val audioAttributes = AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_ALARM)
+                .build()
+            SoundPool.Builder()
+                .setAudioAttributes(audioAttributes)
+                .build()
+        }
+
+
+
         soundResId = soundPool.load(this, R.raw.bellsound, 1)
     }
 
