@@ -1,6 +1,8 @@
 package com.example.mycounddowntimer
 
 import android.icu.util.DateInterval
+import android.media.AudioManager
+import android.media.SoundPool
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -9,11 +11,25 @@ import java.util.concurrent.CompletableFuture
 
 class MainActivity : AppCompatActivity() {
 
-    // タイマーの作り方
-    // 1. CountDownTimerを継承したクラスを作成する
-    // 2. onTickメソッドとonFinishメソッドをoverride
-    // 3. インスタンス作成
-    // 4. startメソッドでカウントダウンを開始する
+    /*
+    タイマーの作り方
+      1. CountDownTimerを継承したクラスを作成する
+      2. onTickメソッドとonFinishメソッドをoverride
+      3. インスタンス作成
+      4. startメソッドでカウントダウンを開始する
+    */
+
+
+    /*
+    サウンドのつけかた
+      1. SoundPoolクラスのインスタンスを作成する
+      2. loadメソッドでサウンドファイルを読み込み、サウンドIDを取得する
+      3. playメソッドにサウンドIDを渡して再生を開始する
+      4. releaseメソッドでSoundPoolのりソースを解放する
+     */
+
+    private lateinit var soundPool: SoundPool
+    private var soundResId = 0
 
     inner class MyCountDownTimer(millisInFuture: Long,
                                  countDownInterval: Long) :
@@ -31,6 +47,7 @@ class MainActivity : AppCompatActivity() {
 
         override fun onFinish() {
             timerText.text = "0.00"
+            soundPool.play(soundResId, 1.0f, 100f, 0, 0, 1.0f)
         }
     }
 
@@ -58,6 +75,17 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        soundPool = SoundPool(2, AudioManager.STREAM_ALARM, 0)
+        soundResId = soundPool.load(this, R.raw.bellsound, 1)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        soundPool.release()
     }
 }
 
